@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+    </script>
+  </head>
+  <body>
+<?php
+
+$players[] = "David";
+$players[] = "Jacob";
+$players[] = "Gabe";
+$players[] = "Sophie";
+
+$default_period_sec = 30;
+$default_period_msec = 30000;
+
+//var_dump($_POST);
+$now = date("Y-m-d H:i:s");
+//$db = new SQLite3('/var/www/html/database.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+
+if (isset($_POST['start_timer'])) {
+  //$start_timer_name = SQLite3::escapeString($_POST['start_timer']);
+  //$db->exec("UPDATE players SET start_time = '$now' WHERE name == '$start_timer_name' AND start_time IS NULL");
+} else if (isset($_POST['stop_timer'])) {
+  //$stop_timer_name = SQLite3::escapeString($_POST['stop_timer']);
+  //$db->exec("UPDATE players SET start_time = NULL WHERE name == '$stop_timer_name'");
+}
+
+//$res = $db->query('SELECT * FROM players');
+echo "<table>";
+foreach ($players as $row) {
+//while ($row = $res->fetchArray()) {
+  echo "<tr> <td>{$row}</td> <td> <form method=\"post\">";
+  if (isset($row['start_time'])) {
+    echo "<button name=\"stop_timer\" value=\"{$row}\">Stop</button>";
+  } else {
+    echo "<button name=\"start_timer\" value=\"{$row}\">Start</button>";
+  }
+  echo "</form></td></tr>";
+}
+echo "</table>";
+//var_dump(gettimeofday());
+
+?>
+  </body>
+</html>
