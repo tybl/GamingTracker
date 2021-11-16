@@ -10,3 +10,4 @@ services:
         image: php:fpm
         volumes:
             - ./app:/app
+            - ./data:/var/www/html

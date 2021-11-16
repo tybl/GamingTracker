@@ -48,22 +48,29 @@ function append_remaining_time() {
   <body>
 <?php
 var_dump($_POST);
+$now = date("Y-m-d H:i:s");
+$db = new SQLite3('/var/www/html/database.sqlite', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+$db->exec("CREATE TABLE IF NOT EXISTS timers(id INTEGER PRIMARY KEY AUTOINCREMENT, remain_time INTEGER, start_time TEXT)");
 if (isset($_POST['start_turn'])) {
+  $remaining = $_POST['start_turn'];
+  $db->exec("INSERT OR REPLACE INTO timers (id, remain_time, start_time) VALUES (1, $remaining, $now)");
   // Stop
-  echo("<body onload=\"start_timer({$_POST['start_turn']})\">");
+  echo("<body onload=\"start_timer({$remaining})\">");
   echo("<form method=\"post\" onsubmit=\"append_remaining_time()\">");
   echo("<button name=\"stop_turn\" id=\"buttton\">Stop</button>");
   echo("</form>");
   echo("</body>");
 } else if (isset($_POST['stop_turn'])) {
+  $remaining = $_POST['stop_turn'];
+  $db->exec("INSERT OR REPLACE INTO timers (id, remain_time, start_time) VALUES (1, $remaining, NULL)");
   // Start, Reset
   echo("<body>");
   echo("<form method=\"post\">");
-  echo("<button name=\"start_turn\" value=\"{$_POST['stop_turn']}\">Start</button>");
+  echo("<button name=\"start_turn\" value=\"{$remaining}\">Start</button>");
   echo("<button name=\"reset_turn\">Reset</button>");
   echo("</form>");
   echo("</body>");
-} else {
+} else if (isset($_POST['reset_turn'])) {
   // Start
   echo("<body>");
   echo("<form method=\"post\">");
